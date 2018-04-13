@@ -72,6 +72,9 @@ public class CsrfProtector
     /**
      * Generates and registers a token with the provided {@code entropy}.
      *
+     * If the insertion of the newly generated token exceeds the maximum number if tokens allowed, the oldest registered
+     * token is removed.
+     *
      * @param entropy The entropy of the token to generate in bytes.
      * @return The newly generated token.
      */
@@ -90,6 +93,9 @@ public class CsrfProtector
 
     /**
      * Generates and registers a token with the configured entropy in bytes.
+     *
+     * If the insertion of the newly generated token exceeds the maximum number if tokens allowed, the oldest registered
+     * token is removed.
      *
      * @return The newly generated token.
      */
