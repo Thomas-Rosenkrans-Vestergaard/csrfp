@@ -3,7 +3,7 @@ package tvestergaard.csrfp;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 
 /**
  * Generates and verifies Base64 tokens used to protect against Cross Site Request Forgery. Uses the {@link SecureRandom}
@@ -25,7 +25,7 @@ public class CsrfProtector
     /**
      * The tokens registered with the {@link CsrfProtector}.
      */
-    private final LinkedList<String> tokens = new LinkedList<>();
+    private final LinkedHashSet<String> tokens = new LinkedHashSet<>();
 
     /**
      * The source of randomness used when generating new tokens.
@@ -71,7 +71,7 @@ public class CsrfProtector
 
     /**
      * Generates and registers a token with the provided {@code entropy}.
-     *
+     * <p>
      * If the insertion of the newly generated token exceeds the maximum number if tokens allowed, the oldest registered
      * token is removed.
      *
@@ -85,15 +85,16 @@ public class CsrfProtector
         String token = encoder.encodeToString(bytes);
 
         if (tokens.size() == maximum)
-            tokens.removeFirst();
-        tokens.push(token);
+            tokens.remove(tokens.iterator().next());
+
+        tokens.add(token);
 
         return token;
     }
 
     /**
      * Generates and registers a token with the configured entropy in bytes.
-     *
+     * <p>
      * If the insertion of the newly generated token exceeds the maximum number if tokens allowed, the oldest registered
      * token is removed.
      *
